@@ -1,4 +1,4 @@
-package com.samsung.iotcloud;
+package com.smartthings;
 
 import com.datastax.driver.core.*;
 import com.datastax.driver.core.policies.DCAwareRoundRobinPolicy;
@@ -113,8 +113,8 @@ public class CassandraConfig {
 			builder.withCredentials(user, password);
 		}
 
-		Session session = builder.build().connect(keyspace);
-
+		Cluster cluster = builder.build();
+		Session session = connect(cluster);
 		if (autoMigrate) {
 			migration(session);
 		}
@@ -122,19 +122,23 @@ public class CassandraConfig {
 		return session;
 	}
 
+	protected Session connect(Cluster cluster) {
+		return cluster.connect(keyspace);
+	}
+
 	public SSLContext getSSLContext(String truststorePath, String truststorePassword, String keystorePath, String keystorePassword) throws Exception {
 
-			KeyStore truststore = loadKeystore(truststorePath, truststorePassword);
-			TrustManagerFactory trustManagerFactory = TrustManagerFactory.getInstance(TrustManagerFactory.getDefaultAlgorithm());
-			trustManagerFactory.init(truststore);
+		KeyStore truststore = loadKeystore(truststorePath, truststorePassword);
+		TrustManagerFactory trustManagerFactory = TrustManagerFactory.getInstance(TrustManagerFactory.getDefaultAlgorithm());
+		trustManagerFactory.init(truststore);
 
-			KeyStore keystore = loadKeystore(keystorePath, keystorePassword);
-			KeyManagerFactory keyManagerFactory = KeyManagerFactory.getInstance(KeyManagerFactory.getDefaultAlgorithm());
-			keyManagerFactory.init(keystore, keystorePassword.toCharArray());
+		KeyStore keystore = loadKeystore(keystorePath, keystorePassword);
+		KeyManagerFactory keyManagerFactory = KeyManagerFactory.getInstance(KeyManagerFactory.getDefaultAlgorithm());
+		keyManagerFactory.init(keystore, keystorePassword.toCharArray());
 
-			SSLContext context = SSLContext.getInstance("SSL");
-			context.init(keyManagerFactory.getKeyManagers(), trustManagerFactory.getTrustManagers(), new SecureRandom());
-			return context;
+		SSLContext context = SSLContext.getInstance("SSL");
+		context.init(keyManagerFactory.getKeyManagers(), trustManagerFactory.getTrustManagers(), new SecureRandom());
+		return context;
 	}
 
 	private KeyStore loadKeystore(String path, String password) throws Exception {
