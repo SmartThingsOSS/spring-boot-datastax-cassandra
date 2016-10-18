@@ -96,14 +96,14 @@ bintray {
 	publish = true
 	pkg {
 		repo = 'maven'
-		name = 'smartthings.konsumer'
+		name = 'smartthings.spring-boot-datastax-cassandra'
 		userOrg = 'smartthingsoss'
 		licenses = ['Apache-2.0']
-		desc = 'Opinionated kafka consumer'
-		labels = ['kafka']
-		websiteUrl = 'https://github.com/SmartThingsOSS/konsumer'
-		issueTrackerUrl = 'https://github.com/SmartThingsOSS/konsumer/issues'
-		vcsUrl = 'https://github.com/SmartThingsOSS/konsumer.git'
+		desc = 'Cassandra configuration for Spring Boot'
+		labels = []
+		websiteUrl = 'https://github.com/SmartThingsOSS/spring-boot-datastax-cassandra'
+		issueTrackerUrl = 'https://github.com/SmartThingsOSS/spring-boot-datastax-cassandra'
+		vcsUrl = 'https://github.com/SmartThingsOSS/spring-boot-datastax-cassandra.git'
 		version {
 			name = project.version
 			vcsTag = project.version
